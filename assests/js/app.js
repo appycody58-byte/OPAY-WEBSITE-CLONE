@@ -128,33 +128,79 @@ if (userTitle) {
   observer.observe(userTitle);
 }
 
-/* ---------- 6. TRANSACTION SIMULATOR ---------- */
+/* ---------- 6. DEMO WALLET + TRANSFER CENTER (₦1,000,000) ---------- */
+let demoBalance = 1000000; // ₦1,000,000 starting balance
+
+function formatMoney(n) {
+  return "₦" + Number(n).toLocaleString();
+}
+
+function updateBalanceDisplay() {
+  const el = $("#demo-balance");
+  if (el) {
+    el.textContent = formatMoney(demoBalance);
+    el.classList.add("balance-pulse");
+    setTimeout(() => el.classList.remove("balance-pulse"), 600);
+  }
+}
+
 function createSimulator() {
   const section = document.createElement("section");
   section.className = "beyond-lab";
   section.id = "beyond";
   section.innerHTML = `
     <div class="container">
-      <h2 class="lab-title" data-aos="fade-up">🚀 Alat Power Lab</h2>
-      <p class="lab-sub">Experimental playground — simulate free transfers, feel the power</p>
+      <h2 class="lab-title" data-aos="fade-up">💰 Alat Demo Wallet</h2>
+      <p class="lab-sub">Play with real transfer flows — starting balance ₦1,000,000</p>
       
+      <!-- BALANCE CARD -->
+      <div class="wallet-balance-card glass">
+        <div class="balance-label">Available Balance</div>
+        <div class="balance-amount" id="demo-balance">₦1,000,000</div>
+        <div class="balance-sub">Demo Account • Free Transfers • 100% Success Rate</div>
+      </div>
+
       <div class="sim-grid">
+        <!-- TRANSFER CARD -->
         <div class="sim-card glass">
-          <h3>Instant Free Transfer</h3>
+          <h3>💸 Transfer Money</h3>
           <div class="sim-form">
-            <input type="text" id="sim-amount" placeholder="Amount (₦)" value="5000">
-            <input type="text" id="sim-bank" placeholder="Bank / Alat Wallet" value="Alat Wallet">
-            <button id="sim-send" class="btn-power">Send Now →</button>
+            <label class="sim-label">Transfer Method</label>
+            <select id="sim-method" class="sim-select">
+              <option value="alat">Alat Wallet (Instant & Free)</option>
+              <option value="bank">Other Bank Account</option>
+              <option value="ussd">USSD / Bank Transfer</option>
+              <option value="pos">POS / Agent</option>
+            </select>
+
+            <label class="sim-label">Amount (₦)</label>
+            <input type="number" id="sim-amount" placeholder="Enter amount" value="5000" min="100">
+
+            <label class="sim-label">Recipient</label>
+            <input type="text" id="sim-recipient" placeholder="Name or Account Number" value="John Doe">
+
+            <label class="sim-label">Bank / Wallet</label>
+            <input type="text" id="sim-bank" placeholder="e.g. GTBank / Alat Wallet" value="Alat Wallet">
+
+            <button id="sim-send" class="btn-power">Send Money →</button>
           </div>
           <div id="sim-result" class="sim-result"></div>
         </div>
 
+        <!-- QUICK ACTIONS + STATS -->
         <div class="sim-card glass">
-          <h3>Live Stats Pulse</h3>
-          <div class="stats">
+          <h3>⚡ Quick Actions</h3>
+          <div class="quick-actions">
+            <button class="quick-btn" data-amount="1000">Send ₦1,000</button>
+            <button class="quick-btn" data-amount="5000">Send ₦5,000</button>
+            <button class="quick-btn" data-amount="10000">Send ₦10,000</button>
+            <button class="quick-btn" data-amount="50000">Send ₦50,000</button>
+          </div>
+
+          <div class="stats" style="margin-top:1.8rem">
             <div class="stat">
               <span class="stat-num" id="tps">0</span>
-              <span class="stat-label">TPS (sim)</span>
+              <span class="stat-label">TPS</span>
             </div>
             <div class="stat">
               <span class="stat-num" id="uptime">99.99%</span>
@@ -162,9 +208,11 @@ function createSimulator() {
             </div>
             <div class="stat">
               <span class="stat-num" id="cashback">₦0</span>
-              <span class="stat-label">Cashback today</span>
+              <span class="stat-label">Cashback</span>
             </div>
           </div>
+
+          <button id="reset-balance" class="btn-reset" style="margin-top:1.5rem">🔄 Reset to ₦1,000,000</button>
         </div>
       </div>
     </div>
@@ -175,26 +223,82 @@ function createSimulator() {
     usersSection.after(section);
   }
 
+  // Main transfer logic
   const sendBtn = $("#sim-send");
   const result = $("#sim-result");
-  sendBtn?.addEventListener("click", () => {
-    const amount = $("#sim-amount").value || "0";
-    const bank = $("#sim-bank").value || "Unknown";
-    result.innerHTML = `<div class="success-pulse">✅ ₦${Number(amount).toLocaleString()} sent to ${bank} — FREE & INSTANT</div>`;
+
+  function doTransfer(amount, method, recipient, bank) {
+    amount = Number(amount) || 0;
+    if (amount < 100) {
+      result.innerHTML = `<div class="error-pulse">❌ Minimum transfer is ₦100</div>`;
+      result.classList.add("show");
+      return;
+    }
+    if (amount > demoBalance) {
+      result.innerHTML = `<div class="error-pulse">❌ Insufficient balance. You have ${formatMoney(demoBalance)}</div>`;
+      result.classList.add("show");
+      return;
+    }
+
+    // Deduct
+    demoBalance -= amount;
+    updateBalanceDisplay();
+
+    // Method specific message
+    let methodText = {
+      alat: "Alat Wallet (Instant & Free)",
+      bank: "Other Bank Account",
+      ussd: "USSD / Bank Transfer",
+      pos: "POS / Agent"
+    }[method] || method;
+
+    result.innerHTML = `
+      <div class="success-pulse">
+        ✅ ${formatMoney(amount)} sent successfully!<br>
+        <small>To: ${recipient} • ${bank}<br>
+        Method: ${methodText}<br>
+        New Balance: ${formatMoney(demoBalance)}</small>
+      </div>`;
     result.classList.add("show");
 
+    // Update cashback
     const cash = $("#cashback");
     if (cash) {
       const current = parseInt(cash.textContent.replace(/[^\d]/g, "")) || 0;
-      cash.textContent = "₦" + (current + Math.floor(Math.random() * 50) + 10).toLocaleString();
+      cash.textContent = "₦" + (current + Math.floor(Math.random() * 30) + 5).toLocaleString();
     }
 
+    // TPS spike
     const tps = $("#tps");
-    if (tps) {
-      tps.textContent = Math.floor(Math.random() * 4000) + 1200;
-    }
+    if (tps) tps.textContent = Math.floor(Math.random() * 4000) + 1500;
+  }
+
+  sendBtn?.addEventListener("click", () => {
+    const amount = $("#sim-amount").value;
+    const method = $("#sim-method").value;
+    const recipient = $("#sim-recipient").value || "Unknown";
+    const bank = $("#sim-bank").value || "Unknown";
+    doTransfer(amount, method, recipient, bank);
   });
 
+  // Quick action buttons
+  $$(".quick-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const amount = btn.dataset.amount;
+      $("#sim-amount").value = amount;
+      doTransfer(amount, $("#sim-method").value, $("#sim-recipient").value, $("#sim-bank").value);
+    });
+  });
+
+  // Reset balance
+  $("#reset-balance")?.addEventListener("click", () => {
+    demoBalance = 1000000;
+    updateBalanceDisplay();
+    result.innerHTML = `<div class="success-pulse">🔄 Balance reset to ₦1,000,000</div>`;
+    result.classList.add("show");
+  });
+
+  // Live TPS
   setInterval(() => {
     const tps = $("#tps");
     if (tps && Math.random() > 0.4) {
@@ -290,4 +394,4 @@ $$(".nav_list").forEach((item) => {
 });
 
 console.log("%c🚀 ALAT BY WEMA — Hacked & Powered by Grok", "color:#1dc99b;font-size:16px;font-weight:bold");
-console.log("%cDark mode • Live counters • Transaction simulator • Particles • 3D tilt • Typewriter", "color:#888");
+console.log("%cDark mode • Live counters • Demo Wallet ₦1M • Transfer methods • Particles • 3D tilt", "color:#888");
