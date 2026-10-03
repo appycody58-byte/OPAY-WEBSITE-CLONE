@@ -428,3 +428,132 @@ header {
 .scroll_up:hover {
   transform: translateY(-4px) scale(1.1);
 }
+
+/* Demo Wallet */
+.wallet-balance-card {
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #1dc99b, #00a884);
+  color: #fff;
+  box-shadow: 0 14px 40px rgba(29, 201, 155, 0.35);
+}
+
+.balance-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.85;
+}
+
+.balance-amount {
+  font-size: 2.6rem;
+  font-weight: 800;
+  margin: 0.4rem 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.balance-sub {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.balance-pulse {
+  animation: balancePulse 0.6s ease;
+}
+
+@keyframes balancePulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+  100% { transform: scale(1); }
+}
+
+.sim-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.75;
+  margin-bottom: -0.4rem;
+}
+
+.sim-select {
+  padding: 0.85rem 1.1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(29, 201, 155, 0.3);
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.sim-select:focus {
+  border-color: var(--opay-green);
+  box-shadow: 0 0 0 3px rgba(29, 201, 155, 0.2);
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+.quick-btn {
+  padding: 0.85rem 0.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--opay-green);
+  background: rgba(29, 201, 155, 0.08);
+  color: var(--opay-green);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-btn:hover {
+  background: var(--opay-green);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.btn-reset {
+  width: 100%;
+  padding: 0.85rem 1.2rem;
+  border-radius: 12px;
+  border: 1px dashed rgba(29, 201, 155, 0.6);
+  background: transparent;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-reset:hover {
+  border-style: solid;
+  border-color: var(--opay-green);
+  color: var(--opay-green);
+}
+
+.error-pulse {
+  background: rgba(231, 76, 60, 0.12);
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  padding: 0.9rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  animation: errorShake 0.4s ease;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+@media (max-width: 768px) {
+  .balance-amount {
+    font-size: 2rem;
+  }
+}
