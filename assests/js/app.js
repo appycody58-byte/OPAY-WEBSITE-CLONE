@@ -1,5 +1,5 @@
 /* ============================================================
-   OPAY BEYOND LIMITS — Power Hacks by Grok
+   ALAT BY WEMA — Power Hacks by Grok
    Breaking the ordinary. Creative. Limitless. 💡
    ============================================================ */
 
@@ -42,7 +42,7 @@ window.addEventListener("scroll", () => {
   scrollReveal();
 });
 
-/* ---------- 3. DARK MODE TOGGLE (BREAKING LIMITS) ---------- */
+/* ---------- 3. DARK MODE TOGGLE ---------- */
 const themeToggle = document.createElement("button");
 themeToggle.id = "theme-toggle";
 themeToggle.innerHTML = `<i class="fas fa-moon"></i>`;
@@ -54,7 +54,7 @@ if (navContainer) {
   navContainer.appendChild(themeToggle);
 }
 
-const savedTheme = localStorage.getItem("opay-theme") || "light";
+const savedTheme = localStorage.getItem("alat-theme") || "light";
 if (savedTheme === "dark") {
   document.documentElement.setAttribute("data-theme", "dark");
   themeToggle.innerHTML = `<i class="fas fa-sun"></i>`;
@@ -64,11 +64,11 @@ themeToggle.addEventListener("click", () => {
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
   if (isDark) {
     document.documentElement.removeAttribute("data-theme");
-    localStorage.setItem("opay-theme", "light");
+    localStorage.setItem("alat-theme", "light");
     themeToggle.innerHTML = `<i class="fas fa-moon"></i>`;
   } else {
     document.documentElement.setAttribute("data-theme", "dark");
-    localStorage.setItem("opay-theme", "dark");
+    localStorage.setItem("alat-theme", "dark");
     themeToggle.innerHTML = `<i class="fas fa-sun"></i>`;
   }
 });
@@ -76,15 +76,15 @@ themeToggle.addEventListener("click", () => {
 /* ---------- 4. TYPEWRITER HERO EFFECT ---------- */
 const heroText = $(".hero_text");
 if (heroText) {
-  const text = "We are Beyond Banking";
-  const spanPart = "Beyond<br> Banking";
+  const text = "Banking Reimagined";
+  const spanPart = "Reimagined";
   heroText.innerHTML = "";
   let i = 0;
 
   function type() {
     if (i < text.length) {
-      if (text.substring(i).startsWith("Beyond")) {
-        heroText.innerHTML = `We are <span>${spanPart}</span>`;
+      if (text.substring(i).startsWith("Reimagined")) {
+        heroText.innerHTML = `Banking <span>${spanPart}</span>`;
         i = text.length;
       } else {
         heroText.innerHTML = text.substring(0, i + 1);
@@ -98,7 +98,7 @@ if (heroText) {
   setTimeout(type, 350);
 }
 
-/* ---------- 5. LIVE USER COUNTER (Animated) ---------- */
+/* ---------- 5. LIVE USER COUNTER ---------- */
 function animateCounter(el, target, duration = 2200) {
   let start = 0;
   const increment = target / (duration / 16);
@@ -128,14 +128,14 @@ if (userTitle) {
   observer.observe(userTitle);
 }
 
-/* ---------- 6. TRANSACTION SIMULATOR (Interactive Playground) ---------- */
+/* ---------- 6. TRANSACTION SIMULATOR ---------- */
 function createSimulator() {
   const section = document.createElement("section");
   section.className = "beyond-lab";
   section.id = "beyond";
   section.innerHTML = `
     <div class="container">
-      <h2 class="lab-title" data-aos="fade-up">🚀 Beyond Limits Lab</h2>
+      <h2 class="lab-title" data-aos="fade-up">🚀 Alat Power Lab</h2>
       <p class="lab-sub">Experimental playground — simulate free transfers, feel the power</p>
       
       <div class="sim-grid">
@@ -143,7 +143,7 @@ function createSimulator() {
           <h3>Instant Free Transfer</h3>
           <div class="sim-form">
             <input type="text" id="sim-amount" placeholder="Amount (₦)" value="5000">
-            <input type="text" id="sim-bank" placeholder="Bank / OPay Wallet" value="OPay Wallet">
+            <input type="text" id="sim-bank" placeholder="Bank / Alat Wallet" value="Alat Wallet">
             <button id="sim-send" class="btn-power">Send Now →</button>
           </div>
           <div id="sim-result" class="sim-result"></div>
@@ -222,7 +222,7 @@ $$(".about_cards, .sim-card").forEach((card) => {
   });
 });
 
-/* ---------- 8. PARTICLE CANVAS BACKGROUND (subtle) ---------- */
+/* ---------- 8. PARTICLE CANVAS BACKGROUND ---------- */
 function initParticles() {
   const canvas = document.createElement("canvas");
   canvas.id = "particle-canvas";
@@ -277,7 +277,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-/* ---------- 10. SMOOTH DROPDOWN IMPROVEMENT ---------- */
+/* ---------- 10. SMOOTH DROPDOWN ---------- */
 $$(".nav_list").forEach((item) => {
   item.addEventListener("mouseenter", () => {
     const sub = item.querySelector(".sub_menu");
@@ -289,5 +289,5 @@ $$(".nav_list").forEach((item) => {
   });
 });
 
-console.log("%c🚀 OPAY BEYOND LIMITS — Hacked & Powered by Grok", "color:#1dc99b;font-size:16px;font-weight:bold");
+console.log("%c🚀 ALAT BY WEMA — Hacked & Powered by Grok", "color:#1dc99b;font-size:16px;font-weight:bold");
 console.log("%cDark mode • Live counters • Transaction simulator • Particles • 3D tilt • Typewriter", "color:#888");
