@@ -135,6 +135,10 @@ function formatMoney(n) {
   return "₦" + Number(n).toLocaleString();
 }
 
+function escapeHTML(str) {
+  return String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
 function updateBalanceDisplay() {
   const el = $("#demo-balance");
   if (el) {
@@ -255,7 +259,7 @@ function createSimulator() {
     result.innerHTML = `
       <div class="success-pulse">
         ✅ ${formatMoney(amount)} sent successfully!<br>
-        <small>To: ${recipient} • ${bank}<br>
+        <small>To: ${escapeHTML(recipient)} • ${escapeHTML(bank)}<br>
         Method: ${methodText}<br>
         New Balance: ${formatMoney(demoBalance)}</small>
       </div>`;
@@ -286,7 +290,7 @@ function createSimulator() {
     btn.addEventListener("click", () => {
       const amount = btn.dataset.amount;
       $("#sim-amount").value = amount;
-      doTransfer(amount, $("#sim-method").value, $("#sim-recipient").value, $("#sim-bank").value);
+      doTransfer(amount, $("#sim-method").value, $("#sim-recipient").value || "Unknown", $("#sim-bank").value || "Unknown");
     });
   });
 
